@@ -3,8 +3,8 @@ class App extends React.Component {
     super(props)
     this.state= {
         operationDisplay: '0',
-        calcDisplay: "0",
-        calcLeftHand: "0",
+        calcDisplay: '0',
+        calcLeftHand: '0',
         calcRightHand: null
         }
     this.handleClear = this.handleClear.bind(this);
@@ -13,9 +13,9 @@ class App extends React.Component {
     }
     handleClear = () => {
         this.setState({
-        operationDisplay: "0",
-        calcDisplay: "0",
-        calcLeftHand: "0",
+        operationDisplay: '0',
+        calcDisplay: '0',
+        calcLeftHand: '0',
         calcRightHand: null
         })
     }
@@ -26,9 +26,10 @@ class App extends React.Component {
         })
     }
     handleNumber = (digit) => {
-        const { operationDisplay } = this.state;
+        const { operationDisplay, calcDisplay } = this.state;
         this.setState({
-            operationDisplay: operationDisplay + digit
+            operationDisplay: operationDisplay === '0' ? digit : operationDisplay + digit,//conditional alternative to if else, if 0 return digit, else append digit
+            calcDisplay: calcDisplay === '0' ? digit : calcDisplay + digit
         })
         console.log(this.state.operationDisplay);
     }
