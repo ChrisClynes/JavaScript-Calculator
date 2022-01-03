@@ -4,25 +4,30 @@ class App extends React.Component {
     this.state= {
         operationDisplay: '0',
         calcDisplay: '0',
-        calcLeftHand: '0',
-        calcRightHand: null
+        currentCalc: null,
+        operandSwitch: false
         }
     this.handleClear = this.handleClear.bind(this);
     this.handleOperation = this.handleOperation.bind(this);
     this.handleNumber = this.handleNumber.bind(this);
+    this.handleDecimal = this.handleDecimal.bind(this);
     }
     handleClear = () => {
         this.setState({
         operationDisplay: '0',
         calcDisplay: '0',
-        calcLeftHand: '0',
-        calcRightHand: null
+        currentCalc: null,
+        operandSwitch: false
         })
     }
     handleOperation = (operator) => {
-        const { operationDisplay } = this.state;
+        const { operationDisplay, currentCalc, calcDisplay } = this.state;
         this.setState({
-            operationDisplay: operationDisplay + operator
+            currentCalc: operationDisplay,
+            operationDisplay: operationDisplay.charAt(operationDisplay.length - 1) == operator ? operationDisplay : operationDisplay + operator,
+            calcDisplay: operator,
+            operandSwitch: true,
+            
         })
     }
     handleNumber = (digit) => {
@@ -31,17 +36,23 @@ class App extends React.Component {
             operationDisplay: operationDisplay === '0' ? digit : operationDisplay + digit,//conditional alternative to if else, if 0 return digit, else append digit
             calcDisplay: calcDisplay === '0' ? digit : calcDisplay + digit
         })
-        console.log(this.state.operationDisplay);
+    }
+    handleDecimal = (decimal) => {
+        const { operationDisplay, calcDisplay, operandSwitch } = this.state;
+        this.setState({
+            operationDisplay: operandSwitch == false & operationDisplay.indexOf('.') >= 0 || operationDisplay.charAt(operationDisplay.length - 1) == decimal ? operationDisplay : operationDisplay + decimal,
+            calcDisplay: operandSwitch == false & calcDisplay.indexOf('.') >= 0 || calcDisplay.charAt(calcDisplay.length - 1) == decimal ? calcDisplay : calcDisplay + decimal
+        })
     }
 
     render () {
-        const { operationDisplay } = this.state;
+        const { operationDisplay, calcDisplay } = this.state;
         
         return (
         <div className="container">
             <div className="grid">
                 <div className="operationDisplay" id="operationDisplay">{operationDisplay}</div>
-                <div className="calcDisplay display" id="display">{this.state.calcDisplay}</div>
+                <div className="calcDisplay display" id="display">{calcDisplay}</div>
                 <div onClick={this.handleClear} className="calcButton clear" id="clear">AC</div>
                 <div onClick={() => this.handleOperation('/')} className="calcButton divide" id="divide">/</div>
                 <div onClick={() => this.handleOperation('*')} className="calcButton multiply" id="multiply">x</div>
@@ -58,7 +69,7 @@ class App extends React.Component {
                 <div onClick={() => this.handleNumber('3')} className="calcButton three" id="three">3</div>
                 <div onClick={() => this.handleOperation('fix me')} className="calcButton equals" id="equals">=</div>
                 <div onClick={() => this.handleNumber('0')} className="calcButton zero" id="zero">0</div>
-                <div onClick={() => this.handleOperation('fix me')} className="calcButton decimal" id="decimal">.</div>
+                <div onClick={() => this.handleDecimal('.')} className="calcButton decimal" id="decimal">.</div>
             </div>
         </div>
         );
