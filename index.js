@@ -5,12 +5,13 @@ class App extends React.Component {
         operationDisplay: '0',
         calcDisplay: '0',
         currentCalc: null,
-        operandSwitch: false
+        decimalSwitch: false
         }
     this.handleClear = this.handleClear.bind(this);
     this.handleOperation = this.handleOperation.bind(this);
     this.handleNumber = this.handleNumber.bind(this);
     this.handleDecimal = this.handleDecimal.bind(this);
+    this.handleSubtractNegative = this.handleSubtractNegative.bind(this);
     }
     handleClear = () => {
         this.setState({
@@ -26,7 +27,7 @@ class App extends React.Component {
             currentCalc: operationDisplay,
             operationDisplay: operationDisplay.charAt(operationDisplay.length - 1) == operator ? operationDisplay : operationDisplay + operator,
             calcDisplay: operator,
-            operandSwitch: true,
+            decimalSwitch: false,
             
         })
     }
@@ -38,13 +39,24 @@ class App extends React.Component {
         })
     }
     handleDecimal = (decimal) => {
-        const { operationDisplay, calcDisplay, operandSwitch } = this.state;
+        const { operationDisplay, calcDisplay, decimalSwitch } = this.state;
         this.setState({
-            operationDisplay: operandSwitch == false & operationDisplay.indexOf('.') >= 0 || operationDisplay.charAt(operationDisplay.length - 1) == decimal ? operationDisplay : operationDisplay + decimal,
-            calcDisplay: operandSwitch == false & calcDisplay.indexOf('.') >= 0 || calcDisplay.charAt(calcDisplay.length - 1) == decimal ? calcDisplay : calcDisplay + decimal
+            operationDisplay: decimalSwitch === true || operationDisplay.charAt(operationDisplay.length - 1) == decimal ? operationDisplay : operationDisplay + decimal,
+            calcDisplay: decimalSwitch === true || calcDisplay.charAt(calcDisplay.length - 1) == decimal ? calcDisplay : calcDisplay + decimal,
+            decimalSwitch: true
+
         })
     }
-
+    handleSubtractNegative = (operator) => {
+        const { operationDisplay, currentCalc, calcDisplay } = this.state;
+        this.setState({
+            currentCalc: operationDisplay,
+            operationDisplay: operationDisplay.charAt(operationDisplay.length - 1) == operator ? operationDisplay : operationDisplay + operator,
+            calcDisplay: operator,
+            decimalSwitch: false,
+            
+        })
+    }
     render () {
         const { operationDisplay, calcDisplay } = this.state;
         
@@ -59,7 +71,7 @@ class App extends React.Component {
                 <div onClick={() => this.handleNumber('7')} className="calcButton seven" id="seven">7</div>
                 <div onClick={() => this.handleNumber('8')} className="calcButton eight" id="eight">8</div>
                 <div onClick={() => this.handleNumber('9')} className="calcButton nine" id="nine">9</div>
-                <div onClick={() => this.handleOperation('-')} className="calcButton subtract" id="subtract">-</div>
+                <div onClick={() => this.handleSubtractNegative('-')} className="calcButton subtract" id="subtract">-</div>
                 <div onClick={() => this.handleNumber('4')} className="calcButton four" id="four">4</div>
                 <div onClick={() => this.handleNumber('5')} className="calcButton five" id="five">5</div>
                 <div onClick={() => this.handleNumber('6')} className="calcButton six" id="six">6</div>
