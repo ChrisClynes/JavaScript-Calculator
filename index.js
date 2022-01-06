@@ -2,7 +2,7 @@ class App extends React.Component {
     constructor(props) {
     super(props)
     this.state= {
-        operationDisplay: '0',
+        operationDisplay: '',
         calcDisplay: '0',
         currentCalc: null,
         decimalSwitch: false
@@ -15,14 +15,14 @@ class App extends React.Component {
     }
     handleClear = () => {
         this.setState({
-        operationDisplay: '0',
+        operationDisplay: '',
         calcDisplay: '0',
         currentCalc: null,
-        operandSwitch: false
+        decimalSwitch: false
         })
     }
     handleOperation = (operator) => {
-        const { operationDisplay, currentCalc, calcDisplay } = this.state;
+        const { operationDisplay, currentCalc, calcDisplay, decimalSwitch} = this.state;
         this.setState({
             currentCalc: operationDisplay,
             operationDisplay: operationDisplay.charAt(operationDisplay.length - 1) == operator ? operationDisplay : operationDisplay + operator,
@@ -47,15 +47,14 @@ class App extends React.Component {
 
         })
     }
-    handleSubtractNegative = (operator) => {
+    handleSubtractNegative = (minus) => {
         const { operationDisplay, currentCalc, calcDisplay } = this.state;
         this.setState({
             currentCalc: operationDisplay,
-            operationDisplay: operationDisplay.charAt(operationDisplay.length - 1) == operator ? operationDisplay : operationDisplay + operator,
-            calcDisplay: operator,
-            decimalSwitch: false,
-            
+            operationDisplay: operationDisplay.charAt(operationDisplay.length - 2) == minus ? operationDisplay : operationDisplay + minus,
+            calcDisplay: minus,  
         })
+    
     }
     render () {
         const { operationDisplay, calcDisplay } = this.state;
