@@ -12,6 +12,7 @@ class App extends React.Component {
     this.handleNumber = this.handleNumber.bind(this);
     this.handleDecimal = this.handleDecimal.bind(this);
     this.handleSubtractNegative = this.handleSubtractNegative.bind(this);
+    this.handleEvaluate = this.handleEvaluate.bind(this);
     }
     handleClear = () => {
         this.setState({
@@ -25,8 +26,8 @@ class App extends React.Component {
         const { operationDisplay, currentCalc, calcDisplay, decimalSwitch} = this.state;
         this.setState({
             currentCalc: operationDisplay,
-            operationDisplay: operationDisplay.charAt(operationDisplay.length - 1) == operator ? operationDisplay : operationDisplay + operator,
-            calcDisplay: operator,
+            operationDisplay: operationDisplay.charAt(operationDisplay.length - 1) == ('/') || ('*') || ('+') ? operationDisplay : operationDisplay + operator,
+            calcDisplay: calcDisplay.charAt(calcDisplay.length - 1) == ('/'||'*'||'+') ? calcDisplay : operator,
             decimalSwitch: false,
             
         })
@@ -56,6 +57,13 @@ class App extends React.Component {
         })
     
     }
+    handleEvaluate = () => {
+        const { operationDisplay, currentCalc, calcDisplay } = this.state;
+        this.setState({
+            calcDisplay: String(eval(operationDisplay)),
+            operationDisplay: String(eval(operationDisplay))
+        })
+    }
     render () {
         const { operationDisplay, calcDisplay } = this.state;
         
@@ -65,22 +73,22 @@ class App extends React.Component {
                 <div className="operationDisplay" id="operationDisplay">{operationDisplay}</div>
                 <div className="calcDisplay display" id="display">{calcDisplay}</div>
                 <div onClick={this.handleClear} className="calcButton clear" id="clear">AC</div>
-                <div onClick={() => this.handleOperation('/')} className="calcButton divide" id="divide">/</div>
-                <div onClick={() => this.handleOperation('*')} className="calcButton multiply" id="multiply">x</div>
-                <div onClick={() => this.handleNumber('7')} className="calcButton seven" id="seven">7</div>
-                <div onClick={() => this.handleNumber('8')} className="calcButton eight" id="eight">8</div>
-                <div onClick={() => this.handleNumber('9')} className="calcButton nine" id="nine">9</div>
-                <div onClick={() => this.handleSubtractNegative('-')} className="calcButton subtract" id="subtract">-</div>
-                <div onClick={() => this.handleNumber('4')} className="calcButton four" id="four">4</div>
-                <div onClick={() => this.handleNumber('5')} className="calcButton five" id="five">5</div>
-                <div onClick={() => this.handleNumber('6')} className="calcButton six" id="six">6</div>
-                <div onClick={() => this.handleOperation('+')} className="calcButton add" id="add">+</div>
-                <div onClick={() => this.handleNumber('1')} className="calcButton one" id="one">1</div>
-                <div onClick={() => this.handleNumber('2')} className="calcButton two" id="two">2</div>
-                <div onClick={() => this.handleNumber('3')} className="calcButton three" id="three">3</div>
-                <div onClick={() => this.handleOperation('fix me')} className="calcButton equals" id="equals">=</div>
-                <div onClick={() => this.handleNumber('0')} className="calcButton zero" id="zero">0</div>
-                <div onClick={() => this.handleDecimal('.')} className="calcButton decimal" id="decimal">.</div>
+                <div onClick={() => this.handleOperation('/')} className="calcButton operator divide" id="divide">/</div>
+                <div onClick={() => this.handleOperation('*')} className="calcButton operator multiply" id="multiply">x</div>
+                <div onClick={() => this.handleNumber('7')} className="calcButton digits seven" id="seven">7</div>
+                <div onClick={() => this.handleNumber('8')} className="calcButton digits eight" id="eight">8</div>
+                <div onClick={() => this.handleNumber('9')} className="calcButton digits nine" id="nine">9</div>
+                <div onClick={() => this.handleSubtractNegative('-')} className="calcButton operator subtract" id="subtract">-</div>
+                <div onClick={() => this.handleNumber('4')} className="calcButton digits four" id="four">4</div>
+                <div onClick={() => this.handleNumber('5')} className="calcButton digits five" id="five">5</div>
+                <div onClick={() => this.handleNumber('6')} className="calcButton digits six" id="six">6</div>
+                <div onClick={() => this.handleOperation('+')} className="calcButton operator add" id="add">+</div>
+                <div onClick={() => this.handleNumber('1')} className="calcButton digits one" id="one">1</div>
+                <div onClick={() => this.handleNumber('2')} className="calcButton digits two" id="two">2</div>
+                <div onClick={() => this.handleNumber('3')} className="calcButton digits three" id="three">3</div>
+                <div onClick={() => this.handleEvaluate()} className="calcButton equals" id="equals">=</div>
+                <div onClick={() => this.handleNumber('0')} className="calcButton digits zero" id="zero">0</div>
+                <div onClick={() => this.handleDecimal('.')} className="calcButton digits decimal" id="decimal">.</div>
             </div>
         </div>
         );

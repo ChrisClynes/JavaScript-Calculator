@@ -59,7 +59,8 @@
     align-items: center;
     font-family: digital;
     padding: 0px 10px;
-    background-color: green;
+    background-color: black;
+    color: orange;
 }
 
 .calcButton {
@@ -67,7 +68,6 @@
     justify-content: center;
     align-items: center;
     padding: 20px 40px;
-    background-color: orange;
     border: 2px solid black;
     cursor: pointer;
 }
@@ -79,6 +79,22 @@
     font-family: digital;
     font-size: 2.5rem; 
     padding: 0px 10px;
-    background-color: blue;
+    background-color: black;
+    color: white;
 }
 
+.digits {
+    background-color: lightgray;
+}
+
+#clear {
+    background-color: tomato;
+}
+
+#equals {
+    background-color: lightskyblue;
+}
+
+.operator {
+    background-color: orange;
+}
