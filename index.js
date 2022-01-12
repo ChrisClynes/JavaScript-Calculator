@@ -26,10 +26,9 @@ class App extends React.Component {
         const { operationDisplay, currentCalc, calcDisplay, decimalSwitch} = this.state;
         this.setState({
             currentCalc: operationDisplay,
-            operationDisplay: operationDisplay.charAt(operationDisplay.length - 1) == ('/') || ('*') || ('+') ? operationDisplay : operationDisplay + operator,
-            calcDisplay: calcDisplay.charAt(calcDisplay.length - 1) == ('/'||'*'||'+') ? calcDisplay : operator,
+            operationDisplay: operationDisplay.charAt(operationDisplay.length - 1) == operator ? operationDisplay : operationDisplay + operator,
+            calcDisplay: calcDisplay.charAt(calcDisplay.length - 1) == operator ? calcDisplay : operator,
             decimalSwitch: false,
-            
         })
     }
     handleNumber = (digit) => {
@@ -49,20 +48,24 @@ class App extends React.Component {
         })
     }
     handleSubtractNegative = (minus) => {
-        const { operationDisplay, currentCalc, calcDisplay } = this.state;
+        const { operationDisplay, currentCalc, calcDisplay, decimalSwitch } = this.state;
         this.setState({
             currentCalc: operationDisplay,
             operationDisplay: operationDisplay.charAt(operationDisplay.length - 2) == minus ? operationDisplay : operationDisplay + minus,
-            calcDisplay: minus,  
+            calcDisplay: minus,
+            decimalSwitch: false  
         })
-    
     }
     handleEvaluate = () => {
         const { operationDisplay, currentCalc, calcDisplay } = this.state;
+        let newExpression = operationDisplay;
+        newExpression = newExpression.replace(/--/g, "-(-")
+        newExpression = newExpression.replace(/-\(-\d+/g, ")")
         this.setState({
-            calcDisplay: String(eval(operationDisplay)),
-            operationDisplay: String(eval(operationDisplay))
+            calcDisplay: String(eval(newExpression)),
+            operationDisplay: String(eval(newExpression))
         })
+        
     }
     render () {
         const { operationDisplay, calcDisplay } = this.state;
