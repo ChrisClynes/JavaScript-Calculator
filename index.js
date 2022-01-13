@@ -59,8 +59,11 @@ class App extends React.Component {
     handleEvaluate = () => {
         const { operationDisplay, currentCalc, calcDisplay } = this.state;
         let newExpression = operationDisplay;
-        newExpression = newExpression.replace(/--/g, "-(-")
-        newExpression = newExpression.replace(/-\(-\d+/g, ")")
+        let matchRegex = /(-\(-\d+\.?\d*)/g;//capture group looks for "-(-" + optional decimal and greedy number of digits after decimal
+        newExpression = newExpression
+            .replace(/--/g, "-(-")
+            .replace(matchRegex, "$1)");//return capture group "$1" + ")"
+            console.log(newExpression);
         this.setState({
             calcDisplay: String(eval(newExpression)),
             operationDisplay: String(eval(newExpression))
