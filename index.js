@@ -4,7 +4,6 @@ class App extends React.Component {
     this.state= {
         operationDisplay: '',
         calcDisplay: '0',
-        currentCalc: null,
         decimalSwitch: false
         }
     this.handleClear = this.handleClear.bind(this);
@@ -18,15 +17,15 @@ class App extends React.Component {
         this.setState({
         operationDisplay: '',
         calcDisplay: '0',
-        currentCalc: null,
         decimalSwitch: false
         })
     }
     handleOperation = (operator) => {
-        const { operationDisplay, currentCalc, calcDisplay, decimalSwitch} = this.state;
+        const { operationDisplay, calcDisplay, decimalSwitch} = this.state;
+        const lastOperatorCheck = operationDisplay.charAt(operationDisplay.length - 1);
         this.setState({
             currentCalc: operationDisplay,
-            operationDisplay: operationDisplay.charAt(operationDisplay.length - 1) == operator ? operationDisplay : operationDisplay + operator,
+            operationDisplay: lastOperatorCheck == '/' || lastOperatorCheck == '*' || lastOperatorCheck == '+' || lastOperatorCheck == '-' ? operationDisplay.replace(lastOperatorCheck, operator) : operationDisplay + operator,
             calcDisplay: calcDisplay.charAt(calcDisplay.length - 1) == operator ? calcDisplay : operator,
             decimalSwitch: false,
         })
@@ -48,7 +47,7 @@ class App extends React.Component {
         })
     }
     handleSubtractNegative = (minus) => {
-        const { operationDisplay, currentCalc, calcDisplay, decimalSwitch } = this.state;
+        const { operationDisplay, calcDisplay, decimalSwitch } = this.state;
         this.setState({
             currentCalc: operationDisplay,
             operationDisplay: operationDisplay.charAt(operationDisplay.length - 2) == minus ? operationDisplay : operationDisplay + minus,
@@ -57,13 +56,12 @@ class App extends React.Component {
         })
     }
     handleEvaluate = () => {
-        const { operationDisplay, currentCalc, calcDisplay } = this.state;
+        const { operationDisplay, calcDisplay } = this.state;
         let newExpression = operationDisplay;
-        let matchRegex = /(-\(-\d+\.?\d*)/g;//capture group looks for "-(-" + optional decimal and greedy number of digits after decimal
+        let matchNegRegex = /(-\(-\d+\.?\d*)/g;//capture group looks for "-(-" + optional decimal and greedy number of digits after decimal
         newExpression = newExpression
             .replace(/--/g, "-(-")
-            .replace(matchRegex, "$1)");//return capture group "$1" + ")"
-            console.log(newExpression);
+            .replace(matchNegRegex, "$1)");//return capture group "$1" + ")"
         this.setState({
             calcDisplay: String(eval(newExpression)),
             operationDisplay: String(eval(newExpression))
